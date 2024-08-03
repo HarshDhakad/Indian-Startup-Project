@@ -83,8 +83,7 @@ def investor_details(investor):
 
 
 def load_overall_analysis():
-    st.title("Overall Analysis")
-
+    
     col1,col2,col3,col4 = st.columns(4)
     with col1:
         total=df['amount in Cr'].sum()

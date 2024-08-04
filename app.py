@@ -18,6 +18,58 @@ df['year']=df['date'].dt.year
 
 
 
+def startup_details(startups):
+    st.title("STARTUP -> "+startups)
+    st.subheader("")
+    # Assuming 'df' is your DataFrame and 'startups' contains the value you are looking for
+    filtered_df = df[df['startup'].str.contains(startups)]
+
+
+    col1,col2=st.columns(2)
+
+
+    # If you want the first value only
+    with col1:
+        founder = filtered_df['subvertical'].head().values[0]
+        st.header(" Founder of Company ")
+        st.subheader(founder)
+
+    with col2:
+        industry = filtered_df['vertical'].head().values[0]
+        st.header(" Type of Industry ")
+        st.subheader(industry)
+
+    st.subheader("")
+    col3,col4=st.columns(2)
+    with col3:
+        city = filtered_df['city'].head().values[0]
+        st.header(" Location / City ")
+        st.subheader(city)
+
+
+    with col4:
+        date = filtered_df['date'].head().dt.date.values[0]
+        st.header("Date")
+        st.subheader(date)
+
+    st.subheader("")
+    col5, col6 = st.columns(2)
+    with col5:
+        stage = filtered_df['round'].head().values[0]
+        st.header("Round Stage")
+        st.subheader(stage)
+
+    with col6:
+        investor = filtered_df['investors'].head().values[0]
+        st.header("Investors")
+        st.subheader(investor)
+
+    st.subheader("")
+
+    st.header("Similar Startups")
+
+
+
 def investor_details(investor):
     st.title(investor)
 
@@ -83,7 +135,8 @@ def investor_details(investor):
 
 
 def load_overall_analysis():
-    
+    st.title("Overall Analysis")
+
     col1,col2,col3,col4 = st.columns(4)
     with col1:
         total=df['amount in Cr'].sum()
@@ -132,8 +185,10 @@ def load_overall_analysis():
 
 
 if option=='Startups':
-    st.sidebar.selectbox('Select Startup',sorted(df['startup'].unique().tolist()))
+    selected_startup=st.sidebar.selectbox('Select Startup',sorted(df['startup'].unique().tolist()))
     btn1 = st.sidebar.button('Find Startups Details')
+    if btn1:
+        startup_details(selected_startup)
 elif option=='Investors':
     selected_investor=st.sidebar.selectbox('Select Investor',sorted(set(df['investors'].str.split(',').sum())))
     btn2=st.sidebar.button('Find Investors Details')
